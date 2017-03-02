@@ -8,6 +8,8 @@ public class Pathfinding : MonoBehaviour {
 
     PathRequestManager requestManager;
 
+    public bool simplifyPath;
+
     Grid grid;
 
     private void Awake()
@@ -30,21 +32,21 @@ public class Pathfinding : MonoBehaviour {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
-        if (startNode.walkable && targetNode.walkable) { 
+        if (startNode.walkable && targetNode.walkable) {
             Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
             HashSet<Node> closetSet = new HashSet<Node>();
             openSet.Add(startNode);
 
             while (openSet.Count > 0) {
                 Node currentNode = openSet.RemoveFirst();
-            
+
                 closetSet.Add(currentNode);
 
                 if (currentNode == targetNode) {
                     sw.Stop();
                     print("Path found: " + sw.ElapsedMilliseconds + "ms");
                     pathSuccess = true;
-                
+
 
                     break;
                 }
@@ -67,7 +69,7 @@ public class Pathfinding : MonoBehaviour {
                         else {
                             openSet.UpdateItem(neighbour);
                         }
-                        
+
                     }
                 }
             }
@@ -100,7 +102,7 @@ public class Pathfinding : MonoBehaviour {
 
         for (int i = 1; i < path.Count; i++) {
             Vector2 directionNew = new Vector2(path[i - 1].gridX - path[i].gridX, path[i - 1].gridY - path[i].gridY);
-            if(directionNew != directionOld){
+            if(directionNew != directionOld || !simplifyPath){
                 waypoints.Add(path[i].worldPosition);
             }
             directionOld = directionNew;
