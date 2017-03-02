@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Line : MonoBehaviour {
+public struct Line {
 
-	// Use this for initialization
-	void Start () {
-		
+	const float verticalLineGradient = 1e5f;
+
+	float gradient;
+	float y_intercept;
+	float gradientPerpendicular;
+
+	public Line(Vector2 pointOnLine, Vector2 pointPerpendicularToLine){
+		float dx = pointOnLine.x - pointPerpendicularToLine.x;
+		float dy = pointOnLine.y - pointPerpendicularToLine.y;
+
+		gradientPerpendicular = dy / dx;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }
